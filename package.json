@@ -2,6 +2,7 @@
   "name": "fluxo-finance",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "packageManager": "yarn@1.22.22",
   "dependencies": {
     "@expo/ui": "~56.0.14",
     "expo": "~56.0.5",
@@ -30,19 +31,35 @@
     "react-native-worklets": "0.8.3"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.0.2",
+    "@commitlint/config-conventional": "^21.0.2",
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^13.3.3",
     "@types/react": "~19.2.2",
-    "postcss": "^8.5.15",
-    "tailwindcss": "^3.4.19",
     "eas-cli": "^20.0.0",
+    "husky": "^9.1.7",
+    "jest": "^30.4.2",
+    "jest-expo": "^56.0.4",
+    "lint-staged": "^17.0.5",
+    "postcss": "^8.5.15",
+    "react-test-renderer": "^19.2.6",
+    "tailwindcss": "^3.4.19",
     "typescript": "~6.0.3"
   },
   "scripts": {
+    "preinstall": "npx only-allow yarn",
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "prepare": "husky"
   },
-  "private": true
+  "private": true,
+  "engines": {
+    "npm": "DO_NOT_USE_NPM_USE_YARN_INSTEAD",
+    "pnpm": "DO_NOT_USE_PNPM_USE_YARN_INSTEAD"
+  },
+  "lint-staged": {}
 }
