@@ -17,8 +17,12 @@ export function useCreateTransaction(useCase: CreateTransactionUseCase) {
         try {
             await useCase.execute(description, amount, type);
             onSuccess();
-        } catch (err: any) {
-            setError(err.message || 'Ocurrió un error inesperado.');
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message || 'Ocurrió un error inesperado.');
+            } else {
+                setError('Ocurrió un error inesperado.');
+            }
         } finally {
             setIsLoading(false);
         }

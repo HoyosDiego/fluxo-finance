@@ -33,10 +33,17 @@
   "devDependencies": {
     "@commitlint/cli": "^21.0.2",
     "@commitlint/config-conventional": "^21.0.2",
+    "@eslint/eslintrc": "^3.3.5",
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^13.3.3",
     "@types/react": "~19.2.2",
+    "@typescript-eslint/eslint-plugin": "^8.60.0",
+    "@typescript-eslint/parser": "^8.60.0",
     "eas-cli": "^20.0.0",
+    "eslint": "^10.4.0",
+    "eslint-config-expo": "^56.0.4",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "husky": "^9.1.7",
     "jest": "^30.4.2",
     "jest-expo": "^56.0.4",
@@ -58,8 +65,8 @@
   },
   "private": true,
   "engines": {
-    "npm": "DO_NOT_USE_NPM_USE_YARN_INSTEAD",
-    "pnpm": "DO_NOT_USE_PNPM_USE_YARN_INSTEAD"
+    "node": ">=18.0.0",
+    "yarn": ">=1.22.0"
   },
   "lint-staged": {}
 }
