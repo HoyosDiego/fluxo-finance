@@ -1,63 +1,97 @@
-import { useRouter } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+// features/transactions/presentation/screens/AddTransactionScreen.tsx
+import { useState } from 'react';
+import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { CreateTransactionUseCase } from '../../domain/use-cases/create-transaction.use-case';
+import { useCreateTransaction } from '../hooks/useCreateTransaction';
 
-export default function AddTransactionScreen() {
-  const router = useRouter();
+interface Props {
+  createTransactionUseCase: CreateTransactionUseCase;
+}
 
-  const handleSave = () => {
-    router.back();
+export default function AddTransactionScreen({ createTransactionUseCase }: Props) {
+  const [description, setDescription] = useState('');
+  const [amount, setAmount] = useState('');
+  const [type, setType] = useState<'income' | 'expense'>('expense');
+
+  const { createTransaction, isLoading, error } = useCreateTransaction(createTransactionUseCase);
+
+  const handleSubmit = () => {
+    const parsedAmount = parseFloat(amount) || 0;
+
+    createTransaction(description, parsedAmount, type, () => {
+      setDescription('');
+      setAmount('');
+      alert('¡Transacción guardada con éxito!');
+    });
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Formulario de Movimiento</Text>
-        <Text style={styles.subtitle}>
-          Componente protegido dentro de features/transactions
-        </Text>
+    <View className="flex-1 bg-slate-900 p-6 justify-start">
+      <Text className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
+        Tipo de movimiento
+      </Text>
 
-        <TouchableOpacity style={styles.button} onPress={handleSave}>
-          <Text style={styles.buttonText}>Guardar Transacción</Text>
+      {/* Selector de Tipo */}
+      <View className="flex-row gap-4 mb-6">
+        <TouchableOpacity
+          onPress={() => { setType('expense'); }}
+          className={`flex-1 p-4 rounded-xl items-center border ${type === 'expense' ? 'bg-red-500/10 border-red-500' : 'bg-slate-800 border-slate-700'}`}
+        >
+          <Text className={`font-bold ${type === 'expense' ? 'text-red-400' : 'text-slate-400'}`}>
+            Gasto
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => { setType('income'); }}
+          className={`flex-1 p-4 rounded-xl items-center border ${type === 'income' ? 'bg-emerald-500/10 border-emerald-500' : 'bg-slate-800 border-slate-700'}`}
+        >
+          <Text className={`font-bold ${type === 'income' ? 'text-emerald-400' : 'text-slate-400'}`}>
+            Ingreso
+          </Text>
         </TouchableOpacity>
       </View>
+
+      {/* Inputs del formulario */}
+      <Text className="text-slate-300 text-sm font-medium mb-2">Descripción</Text>
+      <TextInput
+        placeholder="Ej. Compra de insumos o herramientas"
+        placeholderTextColor="#64748B"
+        value={description}
+        onChangeText={setDescription}
+        className="bg-slate-800 text-slate-50 p-4 mb-4 rounded-xl border border-slate-700 focus:border-emerald-500"
+      />
+
+      <Text className="text-slate-300 text-sm font-medium mb-2">Monto ($)</Text>
+      <TextInput
+        placeholder="0.00"
+        placeholderTextColor="#64748B"
+        value={amount}
+        keyboardType="numeric"
+        onChangeText={setAmount}
+        className="bg-slate-800 text-slate-50 p-4 mb-6 rounded-xl border border-slate-700 focus:border-emerald-500"
+      />
+
+      {error && (
+        <View className="bg-red-500/10 p-3 rounded-lg mb-4 border border-red-500/20">
+          <Text className="text-red-400 text-sm font-medium text-center">{error}</Text>
+        </View>
+      )}
+
+      {/* Botón de Acción */}
+      {isLoading ? (
+        <ActivityIndicator color="#10B981" size="large" className="mt-2" />
+      ) : (
+        <TouchableOpacity
+          onPress={handleSubmit}
+          activeOpacity={0.8}
+          className="bg-emerald-500 p-4 rounded-xl items-center shadow-lg shadow-emerald-500/20 mt-2"
+        >
+          <Text className="text-slate-950 font-bold text-base">
+            Confirmar Registro
+          </Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0F172A',
-  },
-  content: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#F8FAFC',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#94A3B8',
-    textAlign: 'center',
-    marginBottom: 32,
-  },
-  button: {
-    backgroundColor: '#10B981',
-    paddingVertical: 14,
-    paddingHorizontal: 28,
-    borderRadius: 12,
-    width: '100%',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-});
