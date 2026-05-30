@@ -1,4 +1,3 @@
-// src/presentation/components/ui/Button/Button.tsx
 import { ActivityIndicator, Text, TouchableOpacity } from 'react-native';
 import { twMerge } from 'tailwind-merge';
 import { ButtonProps, variants } from './types';
