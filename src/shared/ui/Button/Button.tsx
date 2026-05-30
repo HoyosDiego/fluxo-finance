@@ -1,7 +1,10 @@
+import { cssInterop } from 'nativewind';
 import { ActivityIndicator, Text, TouchableOpacity } from 'react-native';
 import { twMerge } from 'tailwind-merge';
 import { ButtonProps, variants } from './types';
 
+cssInterop(TouchableOpacity, { className: 'style' });
+cssInterop(Text, { className: 'style' });
 export const Button = ({
     label,
     onPress,
